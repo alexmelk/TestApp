@@ -1,0 +1,33 @@
+﻿@model TestApp.Models.AppDbContextModels.Question
+
+<br />
+<h2 class="text-muted text-center" style="margin-top:0;">@ViewData["Title"]</h2>
+<br />
+<form asp-action="EditQuestion" method="post">
+    <div class="row">
+        @if (ViewData["Title"] == "Добавить вопрос")
+        {
+            <input asp-for="@Model.Id" type="hidden" value='0' />
+        }
+        else
+        {
+            <input asp-for="@Model.Id" type="hidden"/>
+        }
+
+        <div class="form-group col-sm-6">
+            <label asp-for="@Model.Text">Текст вопроса</label>
+            <textarea asp-for="@Model.Text" class="form-control" placeholder=""></textarea>
+            <span asp-validation-for="@Model.Text"></span>
+        </div>
+        <div class="form-group col-sm-6">
+            <label asp-for="@Model.TypeAnswer">Ожидаемый тип ответа на вопрос</label>
+            <select class="form-control" asp-for="@Model.TypeAnswer" asp-items="Html.GetEnumSelectList(typeof(TestApp.Enums.TypeAnswerEnum))"></select>
+            <span asp-validation-for="@Model.TypeAnswer"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button type="submit" class="btn btn-block bg-info border-success-600"> <a style="color:white">@(ViewData["Title"] == "Добавить вопрос" ? "Добавить" : "Обновить")</a></button>
+        </div>
+    </div>
+</form>

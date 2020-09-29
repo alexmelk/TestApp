@@ -1,0 +1,76 @@
+﻿@model SurveyViewModel
+@{
+    ViewData["Title"] = "Опрос";
+}
+<br />
+<br />
+<br />
+<div class="container">
+    <div class="card" style="width:550px; display: -webkit-box; margin: 0 auto">
+        <div class="card-header">
+            <b>Вопрос:</b> [@(Model.Position + 1) из @(Model.Questions.Count())]
+        </div>
+        <div class="card-body">
+            <form method="post" asp-action="NextQuestion" asp-controller="Survey">
+                <input asp-for="@Model.Position" type="hidden" value="@Model.Position" />
+                <h5 class="card-title">@Model.Questions[Model.Position].Text</h5>
+
+                @switch (Model.Questions[Model.Position].TypeAnswer)
+                {
+                    case TestApp.Enums.TypeAnswerEnum.Bool:
+                        {
+                            <div style="display: -webkit-box;">
+                            <span>[Да/Нет]</span>
+                            <input type="checkbox" asp-for="@Model.Answer.IsCheck" style="margin-left:15px;"/>
+                            <span asp-validation-for="@Model.Answer.IsCheck"></span>
+                            </div>
+                            break;
+                        }
+                    case TestApp.Enums.TypeAnswerEnum.Int:
+                        {
+                            <input type="number" min="1" asp-for="@Model.Answer.Text" />
+                            <span asp-validation-for="@Model.Answer.Text"></span>
+                            break;
+                        }
+                    case TestApp.Enums.TypeAnswerEnum.Date:
+                        {
+                            <input type="date" asp-for="@Model.Answer.Text" />
+                            <span asp-validation-for="@Model.Answer.Text"></span>
+                            break;
+                        }
+                    case TestApp.Enums.TypeAnswerEnum.String:
+                        {
+                            <input type="text" asp-for="@Model.Answer.Text" />
+                            <span asp-validation-for="@Model.Answer.Text"></span>
+                            break;
+                        }
+                    case TestApp.Enums.TypeAnswerEnum.FamilyStatus:
+                        {
+                            <select class="form-control" asp-for="@Model.Answer.Text" asp-items="Html.GetEnumSelectList(typeof(TestApp.Enums.FamilyStatusEnum))"></select>
+                            <span asp-validation-for="@Model.Answer.Text"></span>
+                            break;
+                        }
+                    case TestApp.Enums.TypeAnswerEnum.Gender:
+                        {
+                            <select class="form-control" asp-for="@Model.Answer.Text" asp-items="Html.GetEnumSelectList(typeof(TestApp.Enums.GenderEnum))"></select>
+                            <span asp-validation-for="@Model.Answer.Text"></span>
+                            break;
+                        }
+
+                }
+                <div class="row" style="padding-top:10px;">
+                    @if (Model.Position != 0)
+                    {
+                        <div class="col-5">
+                            <a asp-controller="Survey" asp-action="PrevQuestion" asp-route-position="@Model.Position" class="btn btn-info">Назад</a>
+                        </div>
+                    }
+                    <div class="col-5">
+                        <button class="btn btn-success">@((Model.Position == Model.Questions.Count()-1)? "Завершить":"Далее")</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

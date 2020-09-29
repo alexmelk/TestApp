@@ -1,0 +1,30 @@
+﻿@model AdminViewModel
+@{
+    ViewData["Title"] = "Редактировать вопросы";
+}
+<br />
+<br />
+<h2 class="text-muted text-center" style="margin-top:0;">Вопросы <a asp-controller="Admin" asp-action="EditQuestion" style="color:white; font-weight:bold;" class="btn btn-success" title="Добавить вопрос">+</a></h2>
+<br />
+<table class="table table-bordered table-filter-style" id="questions-table">
+    <thead>
+        <tr>
+            <th>Текст</th>
+            <th>Тип ответа</th>
+            <th class="no-export">Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var el in Model.Questions)
+        {
+            <tr>
+                <td>@el.Text</td>
+                <td>@Html.DisplayFor(x => el.TypeAnswer)</td>
+                <td align="center">
+                    <a class="btn btn-primary" asp-action="RemoveQuestion" asp-route-id="@el.Id" title="Удалить выбранную запись">❌</a>
+                    <a class="btn btn-primary" asp-action="EditQuestion" asp-route-id="@el.Id" title="Изменить выбранную запись">✏️</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
