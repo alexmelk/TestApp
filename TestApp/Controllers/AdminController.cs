@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TestApp.Context;
 using TestApp.Models;
 using TestApp.Models.AppDbContextModels;
@@ -107,6 +108,24 @@ namespace TestApp.Controllers
             };
             return View(model);
         }
+
+        public IActionResult ShowServeyList()
+        {
+            var model = _serverDbContext.Surveys.ToList();
+            return View(model);
+        }
+        public IActionResult ShowAnswers(int id)
+        {
+            var answers = _serverDbContext.Answers.Include(x => x.Survey).Where(x=>x.Survey.Id==id).ToList();
+            var model = new ShowAnswersViewModel();
+            foreach(var el in answers)
+            {
+                var question = _appDbContext.Questions.Find(el.QuestionId);
+                model.Answers.Add((el, question));
+            }
+            return View(model);
+        }
+
 
     }
 }

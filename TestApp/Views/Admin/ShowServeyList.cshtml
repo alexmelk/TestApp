@@ -1,0 +1,30 @@
+﻿@model List<TestApp.Models.ServerDbContextModels.Survey>
+@{
+    ViewData["Title"] = "Список опросов";
+}
+<br />
+<br />
+
+<h2 class="text-muted text-center" style="margin-top:0;">@ViewData["Title"]</h2>
+<br />
+<table class="table table-bordered table-filter-style" id="users-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Дата</th>
+            <th>Результаты</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var el in Model)
+        {
+        <tr>
+            <td>@el.Id</td>
+            <td>@el.Date.ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td align="center">
+                <a class="btn btn-primary" asp-action="ShowAnswers" asp-route-id="@el.Id" title="Показать ответы">📑</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

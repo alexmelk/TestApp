@@ -1,0 +1,50 @@
+﻿@model ShowAnswersViewModel
+@{
+    ViewData["Title"] = "Список ответов";
+}
+<br />
+<br />
+
+<h2 class="text-muted text-center" style="margin-top:0;">@ViewData["Title"]</h2>
+<br />
+<table class="table table-bordered table-filter-style" id="users-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Текст вопроса</th>
+            <th>Ответ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var el in Model.Answers)
+        {
+        <tr>
+            <td>@el.Item1.Id</td>
+            <td>@el.Item2.Text</td>
+            @switch (el.Item2.TypeAnswer)
+            {
+                case TestApp.Enums.TypeAnswerEnum.Gender:
+                    {
+
+                        var name = (TestApp.Enums.GenderEnum)Enum.Parse(typeof(TestApp.Enums.GenderEnum), el.Item1.Text);
+                        <td>@Html.DisplayFor(x => name)</td>
+                        break;
+                    }
+                case TestApp.Enums.TypeAnswerEnum.FamilyStatus:
+                    {
+                        var name = (TestApp.Enums.FamilyStatusEnum)Enum.Parse(typeof(TestApp.Enums.FamilyStatusEnum), el.Item1.Text);
+                        <td>@Html.DisplayFor(x => name)</td>
+                        break;
+                    }
+                default:
+                    {
+                        <td>@el.Item1.Text</td>
+                        break;
+                    }
+
+            }
+
+        </tr>
+        }
+    </tbody>
+</table>
