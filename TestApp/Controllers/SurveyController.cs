@@ -43,9 +43,12 @@ namespace TestApp.Controllers
                 if (saved != null)
                 {
                     list = JsonConvert.DeserializeObject<List<Answer>>(saved);
-                    list.Add(model.Answer);
-                    var text = JsonConvert.SerializeObject(list);
-                    HttpContext.Session.SetString("Survey", text);
+                    if (list.Count() == model.Position)
+                    {
+                        list.Add(model.Answer);
+                        var text = JsonConvert.SerializeObject(list);
+                        HttpContext.Session.SetString("Survey", text);
+                    }
                 }
                 else
                 {
@@ -53,12 +56,24 @@ namespace TestApp.Controllers
                     var text = JsonConvert.SerializeObject(create);
                     HttpContext.Session.SetString("Survey", text);
                 }
-                if(list.Count == _appDbContext.Questions.ToList().Count)
+
+                if(list?.Count == _appDbContext.Questions.ToList().Count)
                 {
                     var survey = new Survey() { Date = DateTime.Now };
 
-                    _serverDbContext.Surveys.Add(survey);
+
+                    var questions = _appDbContext.Questions.ToList();
+                    int counter = 0;
+                    foreach(var el in questions)
+                    {
+                        list[counter].Survey = survey;
+                        list[counter].QuestionId = el.Id;
+                        _serverDbContext.Answers.Add(list[counter]);
+                        counter++;
+                    }
                     _serverDbContext.SaveChanges();
+                    HttpContext.Session.Clear();
+                    return RedirectToAction("Index", "Home");
 
                 }
                 else
@@ -77,12 +92,15 @@ namespace TestApp.Controllers
             if (saved != null)
             {
                 var list = JsonConvert.DeserializeObject<List<Answer>>(saved);
-                var el = list[position-1];
 
                 var model = new SurveyViewModel() { 
-                    Answer = el,
-                    Position = --position,
+                    Answer = list.LastOrDefault(),
+                    Position = list.Count()-1,
                     Questions = _appDbContext.Questions.ToList() };
+
+                list.Remove(list.LastOrDefault());
+                var text = JsonConvert.SerializeObject(list);
+                HttpContext.Session.SetString("Survey", text);
 
                 return View("Index", model);
             }

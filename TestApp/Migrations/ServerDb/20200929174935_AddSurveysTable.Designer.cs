@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestApp.Context;
 
 namespace TestApp.Migrations.ServerDb
 {
     [DbContext(typeof(ServerDbContext))]
-    partial class ServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200929174935_AddSurveysTable")]
+    partial class AddSurveysTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +159,10 @@ namespace TestApp.Migrations.ServerDb
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("QuestionId")
+                    b.Property<bool>("IsCheck")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("QuestionId")
                         .HasColumnType("int");
 
                     b.Property<int?>("SurveyId")
@@ -169,9 +174,29 @@ namespace TestApp.Migrations.ServerDb
 
                     b.HasKey("Id");
 
+                    b.HasIndex("QuestionId");
+
                     b.HasIndex("SurveyId");
 
                     b.ToTable("Answer");
+                });
+
+            modelBuilder.Entity("TestApp.Models.AppDbContextModels.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeAnswer")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("TestApp.Models.ServerDbContextModels.Survey", b =>
@@ -307,6 +332,10 @@ namespace TestApp.Migrations.ServerDb
 
             modelBuilder.Entity("TestApp.Models.Answer", b =>
                 {
+                    b.HasOne("TestApp.Models.AppDbContextModels.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
                     b.HasOne("TestApp.Models.ServerDbContextModels.Survey", "Survey")
                         .WithMany()
                         .HasForeignKey("SurveyId");

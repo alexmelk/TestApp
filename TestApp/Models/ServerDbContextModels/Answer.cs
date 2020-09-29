@@ -14,9 +14,21 @@ namespace TestApp.Models
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Неверно введено значение")]
-        public string Text { get; set; }
-        public bool IsCheck { get; set; }
+        public string Text { get; set; } = default;
+        [NotMapped]
+        public bool IsCheck {
+            get
+            {
+                bool value = false;
+                bool.TryParse(Text, out value);
+                return value;
+            }
+            set
+            {
+                if(Text == default)  Text = value.ToString();
+            }
+        }
         public Survey Survey { get; set; }
-        public Question Question { get; set; }
+        public int QuestionId { get; set; }
     }
 }
