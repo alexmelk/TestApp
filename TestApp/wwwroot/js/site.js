@@ -15,4 +15,9 @@ window.onload = function () {
     //    dom: '<"datatable-header"l><"datatable-scroll"Bft><"datatable-footer"ip>',
     //    bSortCellsTop: true,//делаем сортировку по верхнему хеадеру
     //});
+    //void updateSelect(value)
+    //    {
+    //        console.log(@Model.Answer.Text);
+    //        $("select")[0].options[@Model.Answer.Text].selected = true;
+    //    }
 }

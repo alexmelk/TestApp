@@ -20,26 +20,26 @@
                     case TestApp.Enums.TypeAnswerEnum.Bool:
                         {
                             <div style="display: -webkit-box;">
-                            <span>[Да/Нет]</span>
-                            <input type="checkbox" asp-for="@Model.Answer.IsCheck" style="margin-left:15px;"/>
+                                <span>[Да/Нет]</span>
+                                <input type="checkbox" asp-for="@Model.Answer.IsCheck" style="margin-left:15px;" />
                             </div>
                             break;
                         }
                     case TestApp.Enums.TypeAnswerEnum.Int:
                         {
-                            <input type="number" min="1" asp-for="@Model.Answer.Text" />
+                            <input type="number" min="1" asp-for="@Model.Answer.Text" value="@Model.Answer.Text" />
                             <span asp-validation-for="@Model.Answer.Text"></span>
                             break;
                         }
                     case TestApp.Enums.TypeAnswerEnum.Date:
                         {
-                            <input type="date" asp-for="@Model.Answer.Text" />
+                            <input type="date" asp-for="@Model.Answer.Text" value="@Model.Answer.Text" />
                             <span asp-validation-for="@Model.Answer.Text"></span>
                             break;
                         }
                     case TestApp.Enums.TypeAnswerEnum.String:
                         {
-                            <input type="text" asp-for="@Model.Answer.Text" />
+                            <input type="text" asp-for="@Model.Answer.Text" value="@Model.Answer.Text" />
                             <span asp-validation-for="@Model.Answer.Text"></span>
                             break;
                         }
@@ -61,11 +61,11 @@
                     @if (Model.Position != 0)
                     {
                         <div class="col-5">
-                            <a asp-controller="Survey" asp-action="PrevQuestion" asp-route-position="@Model.Position" class="btn btn-info">Назад</a>
+                            <a id="prew" asp-controller="Survey" asp-action="PrevQuestion" asp-route-position="@Model.Position" class="btn btn-info">Назад</a>
                         </div>
                     }
                     <div class="col-5">
-                        <button class="btn btn-success">@((Model.Position == Model.Questions.Count()-1)? "Завершить":"Далее")</button>
+                        <button id="next" class="btn btn-success">@((Model.Position == Model.Questions.Count()-1)? "Завершить":"Далее")</button>
                     </div>
                 </div>
             </form>
@@ -73,3 +73,9 @@
 
     </div>
 </div>
+@*Todo: refactor*@
+<script>
+    $(document).ready(function () {
+        $("select")[0].options[@Model.Answer.Text].selected = true;
+    });
+</script>

@@ -84,6 +84,7 @@ $(function () {
                     }
                 });
             }
+            $('#' + TableId).DataTable().page('last').draw('page');
 
             var SimpleSearch = $("#" + TableId + ">tfoot>tr [filter = SimpleSearch]");
             var DateTime = $("#" + TableId + ">tfoot>tr [filter = DateTime]");
@@ -94,7 +95,6 @@ $(function () {
             var CombineOrderSearch = $("#" + TableId + ">tfoot>tr [filter = CombineOrderSearch]");
             $('#' + TableId).addClass("table-striped");
             var Table = $('#' + TableId);
-
             SimpleSearch.each(function (a, b) { createSimpleSearch($('#' + TableId).DataTable().columns(columnNumberInTable(b.id)), b.id); });
             DateTime.each(function (a, b) { createDateTime($('#' + TableId).DataTable().columns(columnNumberInTable(b.id)), b.id); });
             ListSearch.each(function (a, b) { createListSearch($('#' + TableId).DataTable().columns(columnNumberInTable(b.id)), b.id); });
