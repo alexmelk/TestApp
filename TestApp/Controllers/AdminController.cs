@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestApp.Context;
@@ -10,6 +11,7 @@ using TestApp.Models.AppDbContextModels;
 
 namespace TestApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private AppDbContext _appDbContext;
