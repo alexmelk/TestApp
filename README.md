@@ -7,4 +7,4 @@
 ***    
 Для старта сервера писать в **Telegram:** @alexmelk_Dev
 ***
-Ссылка на сервер: <http://testapp.sytes.net/>
+Ссылка на сервер: <http://testapp.sytes.net/>  (логин и пароль от админки в доке у HR)
